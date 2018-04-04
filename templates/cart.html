@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block body %}
 <table class="table table-striped">
-    <tr><th>Melon Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
+    <tr><th>Product Name</th><th>Quantity</th><th>Price</th><th>Total</th></tr>
 
     {% for key, value in display_cart.iteritems() %}
     <tr><td>{{value["name"]}}</td><td>{{value["qty"]}}</td><td>${{ "%.2f" % value["price"]}}</td><td>${{ "%.2f" % (value["qty"] * value["price"])}}</td></tr>
@@ -10,7 +10,9 @@
 </table>
 <h3>Total: ${{ "%.2f" % total }} </h3>
 
-<a href="/checkout" class="btn btn-large btn-primary">Check Out</a>
+<a href="/checkout" class="btn btn-large btn-primary">QR Check Out</a>
+<a href="/login" class="btn btn-large btn-primary">Check Out</a>
+<a href="/empty" class="btn btn-large btn-primary" style="background-color: #cc0000; border-color: #cc0000;">Empty chart</a>
 {% endblock %}
 
 

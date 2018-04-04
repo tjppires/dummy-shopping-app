@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block body %}
+<h3>Total: ${{ "%.2f" % total }} </h3>
+<center><img src="static/img/{{qr_id}}.png"></center>
+<br>
+<center><img src="/static/img/loading_icon.gif" height="70" width=auto></center>
+<center><h6>Waiting for validation... </h6></center>
+
+<a href="/melons" class="btn btn-large btn-primary mb1 bg-red" style="background-color: #cc0000; border-color: #cc0000;">Cancel</a>
+
+<script>
+let count = 0;
+function validateCheckout() {
+    fetch('/validate?uid={{qr_id}}')
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(responseJson) {
+            console.log(responseJson);
+            if (responseJson.status === "completed") {
+                // Redirect
+                window.location.href = '/success'
+            } else {
+                console.log('Not ok. Checking again');
+                if (count > 30) {
+                    window.location.href = '/timeout'
+                }
+                else {
+                    setTimeout(validateCheckout, 1000);
+                    count++;
+                }
+            }
+        });
+}
+validateCheckout();
+</script>
+{% endblock %}
+
+

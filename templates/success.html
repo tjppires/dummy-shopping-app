@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block body %}
+<center><img src="static/img/success.png" height="400" width="auto"></center>
+
+<center><h4> The transaction was successfully validated!</h4></center>
+<center><h6> Redirecting in 5 seconds... </h6></center>
+
+<a href="/melons" class="btn btn-large btn-primary mb1 bg-red">Go Shopping</a>
+
+<script>
+let count = 0;
+function redirect() {
+    window.location.href = '/melons'
+}
+setTimeout(redirect, 5000);
+</script>
+
+{% endblock %}

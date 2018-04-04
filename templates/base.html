@@ -2,17 +2,18 @@
     <head>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
         <link rel="stylesheet" href="/static/css/style.css" />
+        <title>My Store</title>
     </head>
     <body>
         <div class="navbar navbar-inverse navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
-                    <img src="/static/img/ubermelonsmall.png"><a class="navbar-brand" href="/">Ubermelon</a>
+                    <img src="/static/img/logo.png"><a class="navbar-brand" href="/">MyStore</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/cart"><img class="melon-cart" src="/static/img/watermelon.png"> My Melon Cart</a></li>
-                        {% if session["logged_in"] %}
+                        <li><a href="/cart"><img class="melon-cart" src="/static/img/cart-icon.png"> My Cart</a></li>
+                        {% if session.get("logged_in") %}
                             <li><a href="/login"> {{"Log Out"}} </a></li>
 
                         {% else %}
