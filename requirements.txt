@@ -4,4 +4,5 @@ MarkupSafe==0.23
 Werkzeug==0.9.6
 itsdangerous==0.24
 wsgiref==0.1.2
-qrcode
+Pillow==5.1.0
+qrcode==6.0
