@@ -1,18 +1,42 @@
 {% extends 'base.html' %}
 {% block body %}
-<center><img src="static/img/success.png" height="400" width="auto"></center>
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-spacing:0;}
+    .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+    .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:none;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+    .tg .tg-cpu2{border-color:#000000;vertical-align:top}
+</style>
+<script>
+    let count = 0;
+    function redirect() {
+        window.location.href = '/melons'
+    }
+    setTimeout(redirect, 10000);
+</script>
+<center><img src="static/img/success.png" height="250" width="auto"></center>
 
-<center><h4> The transaction was successfully validated!</h4></center>
-<center><h6> Redirecting in 5 seconds... </h6></center>
+<center><h3> The transaction was successfully validated!</h3></center>
+<hr>
+<center><h4>Transaction Details</h4></center>
+<center>
+    <table class="tg">
+        <tr>
+        <th class="tg-cpu2">Name</th>
+        <th class="tg-cpu2">{{details.name}}</th>
+        </tr>
+        <tr>
+        <td class="tg-cpu2">Address</td>
+        <td class="tg-cpu2">{{details.address}}</td>
+        </tr>
+        <tr>
+        <td class="tg-cpu2">City</td>
+        <td class="tg-cpu2">{{details.city}}</td>
+        </tr>
+    </table>
+</center>
+<hr>
+<center><h6> Redirecting in 10 seconds... </h6></center>
 
 <a href="/melons" class="btn btn-large btn-primary mb1 bg-red">Go Shopping</a>
-
-<script>
-let count = 0;
-function redirect() {
-    window.location.href = '/melons'
-}
-setTimeout(redirect, 5000);
-</script>
 
 {% endblock %}

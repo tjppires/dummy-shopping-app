@@ -20,12 +20,14 @@ class Job:
         self.status = "waiting"
         self.ttl = TIMEOUT
         self.store_name = STORE_NAME
+        self.details = None
     def timeout(self):
         self.status = "timeout"
         self.ttl = 0
-    def complete(self):
+    def complete(self, details):
         if self.status != "timeout":
             self.status = "completed"
+            self.details = details
     def is_completed(self):
         return self.status == "completed"
     def __repr__(self):
@@ -51,19 +53,27 @@ def add_job(uid, price):
     jobs_lock.release()
 
 def check_job(uid):
-    if uid is None:
+    if uid is None or uid not in job_stats:
         return None
     jobs_lock.acquire()
     result = job_stats.get(uid)
     jobs_lock.release()
     return result
 
-def complete_job(uid):
-    if uid is None:
+def complete_job(uid, details):
+    if uid is None or uid not in job_stats:
         return
     jobs_lock.acquire()
-    job_stats[uid].complete()
+    job_stats[uid].complete(details)
     jobs_lock.release()
+
+def get_job_details(uid):
+    if uid is None or uid not in job_stats:
+        return None
+    jobs_lock.acquire()
+    details = job_stats[uid].details
+    jobs_lock.release()
+    return details
 
 app = Flask(__name__)
 app.secret_key = '\xf5!\x07!qj\xa4\x08\xc6\xf8\n\x8a\x95m\xe2\x04g\xbb\x98|U\xa2f\x03'
@@ -110,9 +120,9 @@ def shopping_cart():
                 dict_of_melons[melon.id]["qty"] += 1
             else:
                 dict_of_melons[melon.id] = {"qty":1, "name": melon.common_name, "price":melon.price}
-        
-        return render_template("cart.html", display_cart = dict_of_melons, total = total_price)  
-    
+
+        return render_template("cart.html", display_cart = dict_of_melons, total = total_price)
+
 
 @app.route("/add_to_cart/<int:id>")
 def add_to_cart(id):
@@ -193,7 +203,13 @@ def checkout():
 @app.route("/success")
 def success():
     session.clear()
-    return render_template("success.html")
+    uid = request.args.get("uid")
+    details = get_job_details(uid)
+    if details is None:
+        flash("You didn't checkout. Shop something first.")
+        return redirect("/melons")
+
+    return render_template("success.html", details=details)
 
 @app.route("/timeout")
 def timeout():
@@ -211,7 +227,10 @@ def qr_validation():
             response = {"status": "invalid_id"}
     elif request.method == "POST":
         uid = request.values.get("uid")
-        complete_job(uid)
+        details = {"name": request.values.get("name"),
+                   "address": request.values.get("address"),
+                   "city": request.values.get("city")}
+        complete_job(uid, details)
         if uid is None:
             response = {"status": "invalid_id"}
         else:

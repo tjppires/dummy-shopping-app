@@ -19,7 +19,7 @@ function validateCheckout() {
             console.log(responseJson);
             if (responseJson.status === "completed") {
                 // Redirect
-                window.location.href = '/success'
+                window.location.href = '/success?uid={{qr_id}}'
             } else {
                 console.log('Not ok. Checking again');
                 if (count > 30) {
